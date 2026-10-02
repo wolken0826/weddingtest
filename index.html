@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我們的婚禮 | 出席回覆</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background-color: #F7F5F0;
+            color: #4A4542;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .korean-shadow {
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+        }
+
+        .input-field {
+            width: 100%;
+            border: 1px solid #E2DDD5;
+            background-color: #FCFBF9;
+            padding: 0.875rem 1rem;
+            border-radius: 0.375rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .input-field:focus {
+            border-color: #A3917F;
+            background-color: #FFFFFF;
+        }
+
+        /* 智能表單展開動畫 */
+        .smart-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+
+        .smart-section.show {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        .custom-select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23A3917F" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: 96%;
+            background-position-y: 50%;
+        }
+
+        /* 成功畫面淡入動畫 */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 隱藏 Iframe */
+        .hidden-iframe {
+            display: none;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-start min-h-screen p-0 sm:p-4">
+
+    <div class="w-full max-w-[480px] bg-white sm:rounded-2xl korean-shadow overflow-hidden flex flex-col relative">
+        
+        <!-- 頂部視覺圖片 -->
+        <div class="w-full h-72 sm:h-96 relative overflow-hidden bg-[#EAE6DF]">
+            <img src="婚紗照01.jpg" 
+                 alt="Wedding hero" 
+                 class="w-full h-full object-cover object-top opacity-95">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-white/20"></div>
+        </div>
+
+        <!-- 邀請函資訊區塊 -->
+        <div class="px-8 pt-10 pb-6 text-center">
+            <h1 class="text-xl tracking-[0.2em] mb-2 font-medium text-[#8C7A6B]">搭嘎賀~溫袂結婚啊 💍</h1>
+            <p class="text-sm tracking-widest text-gray-400 mb-8 font-light">2027 . 02 . 14</p>
+            
+            <p class="text-base leading-relaxed mb-8 font-light tracking-wide text-left">
+                經過一番深思熟慮（其實就是決定好了🤣），<br>
+                我們終於要正式攜手踏入人生的新副本啦!<br>
+                這一天對我們來說非常重要，<br>
+                當然不能少了你們一起來熱鬧、吃好料、喝喜酒、見證我們的幸福 ❤️<br><br>
+                為了讓我們可以提前安排座位、餐點，<br>
+                也避免當天出現「欸～你有沒有來？」的尷尬場面😂<br>
+                麻煩大家幫我們填寫一下以下表單，告訴我們當天會不會來<br><br>
+                期待婚禮當天看到大家的身影，<br>
+                一起吃吃喝喝、拍拍照、聊聊天，<br>
+                陪我們把這一天變成一個值得記很久很久的回憶！<br>
+                婚禮見！不見不散！🥂✨
+            </p>
+
+            <div class="inline-block text-left bg-[#FDFCFB] border border-[#F0EBE1] px-6 py-5 rounded-xl text-sm leading-loose tracking-wide w-full mb-6">
+                <div class="flex items-start mb-2">
+                    <span class="text-[#A3917F] font-medium mr-4 shrink-0">日期</span>
+                    <span class="whitespace-nowrap">2027年02月14日</span>
+                </div>
+                <div class="flex items-start mb-2">
+                    <span class="text-[#A3917F] font-medium mr-4 shrink-0">地點</span>
+                    <span class="whitespace-nowrap">高雄老新台菜十全店</span>
+                </div>
+                <div class="flex items-start">
+                    <span class="text-[#A3917F] font-medium mr-4 shrink-0">地址</span>
+                    <span class="whitespace-nowrap">高雄市三民區德西里十全三路265號</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 隱藏式 Iframe：用於無縫攔截提交，不跳轉離開 -->
+        <iframe name="hidden_iframe" id="hidden_iframe" class="hidden-iframe"></iframe>
+
+        <!-- 表單填寫區塊 -->
+        <div class="px-8 pb-12 bg-[#FCFBF9]" id="formContainer">
+            <h2 class="text-center text-lg tracking-[0.15em] mb-8 text-[#756A63] border-b border-[#EAE6DF] pb-4">出席回覆</h2>
+
+            <!-- 恢復 target="hidden_iframe" 以實現無縫提交 -->
+            <form id="weddingForm" action="https://docs.google.com/forms/d/e/1FAIpQLSeEucZoSptfkWRcr8Kn01hRvL9hfv1F0IwEeuJp5afq4psGKQ/formResponse" method="POST" target="hidden_iframe" onsubmit="handleSubmitting()">
+                
+                <!-- 1. 姓名 -->
+                <div class="mb-5">
+                    <label class="block text-sm text-[#756A63] mb-2 tracking-wider">姓名</label>
+                    <input type="text" name="entry.1397251276" class="input-field" value="" required>
+                </div>
+
+                <!-- 2. 聯絡電話 -->
+                <div class="mb-5">
+                    <label class="block text-sm text-[#756A63] mb-2 tracking-wider">聯絡電話</label>
+                    <input type="tel" name="entry.2061441527" class="input-field" value="" required>
+                </div>
+
+                <!-- 3. 與新人的關係 -->
+                <div class="mb-5">
+                    <label class="block text-sm text-[#756A63] mb-2 tracking-wider">請問您與新人的關係</label>
+                    <select name="entry.168695172" class="input-field custom-select" required>
+                        <option value="" disabled selected>請選擇</option>
+                        <option value="新郎親人">新郎親人</option>
+                        <option value="新娘親人">新娘親人</option>
+                        <option value="新郎朋友">新郎朋友</option>
+                        <option value="新娘朋友">新娘朋友</option>
+                        <option value="新郎同事">新郎同事</option>
+                        <option value="新娘同事">新娘同事</option>
+                        <option value="新郎父母親友">新郎父母親友</option>
+                        <option value="新娘父母親友">新娘父母親友</option>
+                    </select>
+                </div>
+
+                <!-- 4. 是否願意參加午宴 -->
+                <div class="mb-5">
+                    <label class="block text-sm text-[#756A63] mb-2 tracking-wider">請問您是否願意參加我們的午宴</label>
+                    <select name="entry.1099390098" id="willAttendSelect" class="input-field custom-select" required>
+                        <option value="" disabled selected>請選擇</option>
+                        <option value="當然，一定到！">當然，一定到！</option>
+                        <option value="很遺憾，無法出席">很遺憾，無法出席</option>
+                    </select>
+                </div>
+
+                <!-- 智能區塊 A：出席人數 -->
+                <div id="attendeesSection" class="smart-section">
+                    <div class="mb-5 pt-1">
+                        <label class="block text-sm text-[#756A63] mb-2 tracking-wider">當天出席人數（包含賓客本人）</label>
+                        <input type="number" id="attendeesCount" name="entry.1197608736" class="input-field" min="0" value="" placeholder="例如: 1">
+                    </div>
+                </div>
+
+                <!-- 智能區塊 B：兒童椅與素食 -->
+                <div id="detailsSection" class="smart-section">
+                    <div class="mb-5 pt-1">
+                        <label class="block text-sm text-[#756A63] mb-2 tracking-wider">需要幾張兒童座椅</label>
+                        <input type="number" id="chairCount" name="entry.146931075" class="input-field" min="0" value="" placeholder="若不需要請填 0">
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="block text-sm text-[#756A63] mb-2 tracking-wider">素食需求人數</label>
+                        <input type="number" id="vegCount" name="entry.2104122171" class="input-field" min="0" value="" placeholder="若無請填 0">
+                    </div>
+                </div>
+
+                <!-- 智能區塊 D：後續聯絡資訊 -->
+                <div id="extendedSection" class="smart-section">
+                    <!-- 8. 是否需要紙本喜帖 (更新為最新文字) -->
+                    <div class="mb-5 pt-1">
+                        <label class="block text-sm text-[#756A63] mb-2 tracking-wider">是否需要紙本喜帖</label>
+                        <select name="entry.730676656" id="paperInviteSelect" class="input-field custom-select">
+                            <option value="" disabled selected>請選擇</option>
+                            <option value="是，請寄送紙本喜帖">是，請寄送紙本喜帖</option>
+                            <option value="否，電子喜帖即可">否，電子喜帖即可</option>
+                            <option value="否，我記住了!">否，我記住了!</option>
+                        </select>
+                    </div>
+
+                    <!-- 智能區塊 C：收件地址 -->
+                    <div id="addressSection" class="smart-section">
+                        <div class="mb-5 pt-1">
+                            <label class="block text-sm text-[#756A63] mb-2 tracking-wider">紙本喜帖收件地址（請附上郵遞區號）</label>
+                            <input type="text" id="addressInput" name="entry.1549818726" class="input-field" value="">
+                        </div>
+                    </div>
+
+                    <!-- 10. 電子喜帖寄送email (非必填) -->
+                    <div class="mb-8">
+                        <label class="block text-sm text-[#756A63] mb-2 tracking-wider">電子喜帖寄送 email <span class="text-xs text-[#A3917F] ml-1">(非必填)</span></label>
+                        <input type="email" name="entry.340922833" class="input-field" value="">
+                    </div>
+                </div>
+
+                <!-- 提交按鈕 -->
+                <button type="submit" id="submitBtn" class="w-full bg-[#8C7A6B] hover:bg-[#786759] text-white py-4 rounded-md tracking-[0.2em] text-sm transition-colors duration-300">
+                    送出回函
+                </button>
+            </form>
+        </div>
+
+        <!-- 專屬高質感成功畫面 (預設隱藏) -->
+        <div id="successScreen" class="hidden px-8 pb-16 pt-8 bg-[#FCFBF9] flex-col items-center justify-center text-center fade-in">
+            <!-- 圓形勾勾圖示 -->
+            <div class="w-16 h-16 bg-[#8C7A6B] rounded-full flex items-center justify-center mb-6 shadow-sm mx-auto text-white">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h3 class="text-xl tracking-[0.15em] text-[#756A63] mb-4 font-medium">回覆成功</h3>
+            <div class="w-12 h-[1px] bg-[#EAE6DF] mx-auto mb-6"></div>
+            <p class="text-sm leading-relaxed font-light tracking-wide text-[#8C7A6B]">
+                我們已經收到您的回覆囉！<br><br>
+                非常感謝您的填寫，<br>
+                期待婚禮當天與您分享我們的喜悅 🥂✨
+            </p>
+        </div>
+
+    </div>
+
+    <!-- 懸浮音樂播放按鈕 (方大同 - 特別的人) -->
+    <button type="button" id="musicToggleBtn" onclick="toggleMusic()" class="fixed bottom-6 right-6 z-50 bg-[#8C7A6B] text-white w-12 h-12 rounded-full shadow-lg hover:bg-[#786759] hover:-translate-y-1 transition-all duration-300 focus:outline-none flex items-center justify-center">
+        <svg id="musicIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>
+        </svg>
+    </button>
+    
+    <!-- 修改此處：將 hidden 改為 1 像素透明，避免瀏覽器凍結播放器 -->
+    <div id="ytplayer" class="fixed -z-50 opacity-0 pointer-events-none w-1 h-1"></div>
+
+    <script>
+        // 取得DOM元素
+        const willAttendSelect = document.getElementById('willAttendSelect');
+        const attendeesSection = document.getElementById('attendeesSection');
+        const attendeesInput = document.getElementById('attendeesCount');
+        
+        const detailsSection = document.getElementById('detailsSection');
+        const chairInput = document.getElementById('chairCount');
+        const vegInput = document.getElementById('vegCount');
+        
+        const extendedSection = document.getElementById('extendedSection');
+        const paperInviteSelect = document.getElementById('paperInviteSelect');
+        const addressSection = document.getElementById('addressSection');
+        const addressInput = document.getElementById('addressInput');
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const weddingForm = document.getElementById('weddingForm');
+        const formContainer = document.getElementById('formContainer');
+        const successScreen = document.getElementById('successScreen');
+        const hiddenIframe = document.getElementById('hidden_iframe');
+
+        // 邏輯 1：是否參加午宴 -> 展開人數
+        willAttendSelect.addEventListener('change', function() {
+            if (this.value === '當然，一定到！') {
+                attendeesSection.classList.add('show');
+                attendeesSection.style.marginBottom = '1.25rem';
+                attendeesInput.required = true;
+                
+                extendedSection.classList.add('show');
+                paperInviteSelect.required = true;
+
+                checkAttendeesCount();
+            } else {
+                attendeesSection.classList.remove('show');
+                attendeesSection.style.marginBottom = '0';
+                attendeesInput.required = false;
+                attendeesInput.value = "";
+                
+                detailsSection.classList.remove('show');
+                detailsSection.style.marginBottom = '0';
+                chairInput.required = false;
+                vegInput.required = false;
+                chairInput.value = "";
+                vegInput.value = "";
+
+                extendedSection.classList.remove('show');
+                paperInviteSelect.required = false;
+                paperInviteSelect.value = "";
+                
+                addressSection.classList.remove('show');
+                addressSection.style.marginBottom = '0';
+                addressInput.required = false;
+                addressInput.value = "";
+                
+                document.querySelector('input[name="entry.340922833"]').value = "";
+            }
+        });
+
+        // 邏輯 2：出席人數 > 0 -> 展開兒童椅與素食
+        attendeesInput.addEventListener('input', checkAttendeesCount);
+
+        function checkAttendeesCount() {
+            const count = parseInt(attendeesInput.value, 10);
+            if (count > 0) {
+                detailsSection.classList.add('show');
+                detailsSection.style.marginBottom = '1.25rem';
+                chairInput.required = true;
+                vegInput.required = true;
+            } else {
+                detailsSection.classList.remove('show');
+                detailsSection.style.marginBottom = '0';
+                chairInput.required = false;
+                vegInput.required = false;
+                chairInput.value = "";
+                vegInput.value = "";
+            }
+        }
+
+        // 邏輯 3：需要紙本喜帖 -> 展開地址
+        paperInviteSelect.addEventListener('change', function() {
+            if (this.value === '是，請寄送紙本喜帖') {
+                addressSection.classList.add('show');
+                addressSection.style.marginBottom = '1.25rem';
+                addressInput.required = true;
+            } else {
+                addressSection.classList.remove('show');
+                addressSection.style.marginBottom = '0';
+                addressInput.required = false;
+                addressInput.value = "";
+            }
+        });
+
+        // 隱藏式提交控制邏輯
+        let isFormSubmitted = false;
+
+        function handleSubmitting() {
+            isFormSubmitted = true;
+            // 讓按鈕變成傳送中狀態，但不禁用，避免 iOS 取消表單提交
+            submitBtn.innerHTML = '傳送中...請稍候';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.pointerEvents = 'none'; 
+        }
+
+        // 監聽 iframe 載入完成 (代表資料已送達 Google)
+        hiddenIframe.addEventListener('load', function() {
+            if (isFormSubmitted) {
+                // 隱藏原本的表單區塊
+                formContainer.style.display = 'none';
+                
+                // 顯示自訂的成功畫面
+                successScreen.classList.remove('hidden');
+                successScreen.classList.add('flex');
+                
+                // 畫面平滑滾動到成功訊息區塊
+                successScreen.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                isFormSubmitted = false; // 重置狀態
+            }
+        });
+
+        // YouTube 背景音樂載入
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        var isPlaying = false;
+        
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytplayer', {
+                // 修改此處：設定微小尺寸取代 0
+                height: '1',
+                width: '1',
+                videoId: 'IscPlLsh6iU',
+                playerVars: {
+                    'autoplay': 1,
+                    'loop': 1,
+                    'playlist': 'IscPlLsh6iU',
+                    'controls': 0,
+                    'showinfo': 0,
+                    'autohide': 1,
+                    'modestbranding': 1,
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
+
+        function toggleMusic() {
+            if (player && typeof player.getPlayerState === 'function') {
+                if (isPlaying) {
+                    player.pauseVideo();
+                } else {
+                    // 加入強制解除靜音與音量設定
+                    player.unMute();
+                    player.setVolume(100);
+                    player.playVideo();
+                }
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            const icon = document.getElementById('musicIcon');
+            const btn = document.getElementById('musicToggleBtn');
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+                btn.style.backgroundColor = '#786759'; 
+            } else {
+                isPlaying = false;
+                icon.innerHTML = '<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>';
+                btn.style.backgroundColor = '#8C7A6B';
+            }
+        }
+
+        let firstInteraction = false;
+        const initAudio = () => {
+            if (!firstInteraction && player && typeof player.getPlayerState === 'function') {
+                // 加入強制解除靜音與音量設定
+                player.unMute();
+                player.setVolume(100);
+                player.playVideo();
+                firstInteraction = true;
+            }
+        };
+
+        // 移除 scroll，因為瀏覽器通常不視滑動為有效的音訊觸發手勢，保留點擊與觸碰
+        ['click', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, initAudio, { passive: true });
+        });
+    </script>
+</body>
+</html>
